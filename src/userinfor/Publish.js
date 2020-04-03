@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View ,StyleSheet,Dimensions,TouchableOpacity,ToastAndroid,ScrollView} from 'react-native'
+import { Text, View ,StyleSheet,Dimensions,TouchableOpacity,ToastAndroid,ScrollView,ActivityIndicator} from 'react-native'
 import { Actions } from 'react-native-router-flux';
 import Icon from 'react-native-vector-icons/AntDesign';
 
@@ -10,7 +10,8 @@ export default class Publish extends Component {
         super()
         this.state={
             data:[],
-            page:1
+            page:1,
+            isLoad:false
         }
     }
     componentDidMount(){
@@ -38,7 +39,8 @@ export default class Publish extends Component {
                 newdata[i].time = this.state.data[i].create_at.split('T')[0];
 
                 this.setState({
-                    data:newdata
+                    data:newdata,
+                    isLoad:true
                 })
             }    
         })
@@ -100,14 +102,16 @@ export default class Publish extends Component {
                     <Icon name='ellipsis1' size={20} color='white'/>
                 </View>
                 {
-                    this.state.data.map((item)=>(
-                        <View style={styles.list_box}>
-                            <Text style={{fontSize:15,width:width*0.6,color:'#3c3b3b'}}>{item.newtitle}</Text>
-                            <Text style={{fontSize:15,width:width*0.25,color:'#3c3b3b'}}>{item.time}</Text> 
-                            <Text style={{fontSize:15,width:width*0.25,color:`${item.color}`}}>{item.select}</Text>   
-                        </View>
-                        
-                    ))
+                    this.state.isLoad?(
+                        this.state.data.map((item)=>(
+                            <View style={styles.list_box}>
+                                <Text style={{fontSize:15,width:width*0.6,color:'#3c3b3b'}}>{item.newtitle}</Text>
+                                <Text style={{fontSize:15,width:width*0.25,color:'#3c3b3b'}}>{item.time}</Text> 
+                                <Text style={{fontSize:15,width:width*0.25,color:`${item.color}`}}>{item.select}</Text>   
+                            </View>
+                            
+                        ))
+                    ):<ActivityIndicator size="large" color="red" />
                 }
                 <View style={styles.foot}>
                     <TouchableOpacity style={styles.btn} onPress={this.goUp}>

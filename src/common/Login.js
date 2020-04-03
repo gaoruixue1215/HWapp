@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text, Image, TextInput, AsyncStorage, TouchableOpacity} from 'react-native';
+import {View, Text, Image, TextInput, AsyncStorage, TouchableOpacity,Alert} from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { Actions } from 'react-native-router-flux';
 import {myFetch} from '../utils';
@@ -20,6 +20,7 @@ export default class Login extends Component {
         this.setState({pwd:text})
     }
     login = ()=>{
+      if(this.state.username != '' && this.state.pwd !=''){
         this.setState({isloading:true})
         myFetch.post('/login',{
             username:this.state.username,
@@ -41,6 +42,10 @@ export default class Login extends Component {
               console.log("登录")
             )
         })
+      }
+      else{
+        Alert.alert('用户名或密码不能为空！')
+      }
     } 
   render() {
     return (
